@@ -7,7 +7,7 @@
 	let data;
 
 	const handleSubmit =async (e) =>{
-		let url = `http://api.weatherapi.com/v1/current.json?key=${API_KEY}&q=${city}`;
+		let url = `https://api.weatherapi.com/v1/current.json?key=${API_KEY}&q=${city}`;
 		
 		const callData = async () =>{
 			const res = await fetch(url);
