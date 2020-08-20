@@ -1,27 +1,23 @@
 <script>
-	import { onMount } from 'svelte';
-	import axios from "axios";
 	import DisplayData from './DisplayData.svelte';
 
 	let city = "";
 	let country ="";
 	let API_KEY = 'c18fdf7e433946bc881144552202008';  
-	let data = {};
-	let number =20;
+	let data;
 
 	const handleSubmit =async (e) =>{
 		let url = `http://api.weatherapi.com/v1/current.json?key=${API_KEY}&q=${city}`;
 		
 		const callData = async () =>{
 			const res = await fetch(url);
-			data = await res.json();
+			const formatData = await res.json();
+			return formatData;
 		}
 
-		return callData();
-	}
-
-	const countUp = () =>{
-		number++;
+		data = callData();
+		city="";
+		country="";
 	}
 
 </script>
@@ -29,13 +25,16 @@
 <main>
 	<section class="app-container">
 		<form on:submit|preventDefault={handleSubmit}>
-			<input class="city" bind:value={city} type="text" required="" placeholder="Enter city...">
-			<input class="country" bind:value={country} type="text" required="" placeholder="Enter country...">
+			<input class="city" bind:value={city} type="text" required placeholder="Enter city...">
+			<input class="country" bind:value={country} type="text" required placeholder="Enter country...">
 			<button type="submit">Enter</button>
-			<p class="text-white">{city || "nowhere"} {country||"nowhere"}</p>
+			{#await data}
+				<p>Loading..</p>
+			{:then dataReady}
+				<DisplayData data={dataReady}/>
+			{/await}
+
 		</form>
-		<DisplayData count={number} data={data}/>
-		<button on:click={countUp}>Click me</button>
 	</section>
 </main>
 
