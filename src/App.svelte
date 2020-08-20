@@ -29,9 +29,11 @@
 			<input class="country" bind:value={country} type="text" required placeholder="Enter country...">
 			<button type="submit">Enter</button>
 			{#await data}
-				<p>Loading..</p>
+				<p class="text-white">Loading....</p>
 			{:then dataReady}
 				<DisplayData data={dataReady}/>
+			{:catch error}
+				<p class="text-white">Sorry, data doesn't exist</p>
 			{/await}
 
 		</form>
@@ -59,6 +61,36 @@
 
 			form{
 				margin-top: 20px;
+
+				input{
+					background: none;
+					border: solid 2px #fff;
+					padding: 10px;
+					border-radius: 10px;
+					margin:0 2px;
+					outline: none;
+					color: #fff;
+				}
+
+				button{
+					border: none;
+					background:#A52277;
+					color: #fff;
+					padding: 12px 40px;
+					border-radius: 10px;
+					font-size: 18px;
+					cursor: pointer;
+
+					&:hover{
+						background : #666666;
+					}
+				}
+
+				@media screen and (max-width: 768px){
+					button{
+						margin-top: 20px;
+					}
+				}
 			}
 		}
 
