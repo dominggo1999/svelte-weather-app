@@ -7,6 +7,7 @@
 	let country; 
 	let temp;
 	let condition;
+	let logoCode;
 	const now = new Date();
 	const date = dateformat("dddd, mmmm d");
 
@@ -15,16 +16,15 @@
 		country = data.location.country;
 		temp = data.current.temp_c;
 		condition = data.current.condition.text;
+		logoCode = data.current.condition.code-887;
 	}
-
 </script>
 
 {#if data}
 	<div class="display-data">
 		<div class="wrapper">
 			<div class="top">
-				<i class="logo wi wi-night-alt-partly-cloudy"></i>
-				<div class="logo"></div>
+				<img class="logo" src={`./weather/${logoCode}.png`} alt="X">
 				<div class="description">
 					<div class="location">{city}, {country}</div>
 					<div class="date">{date}</div>
@@ -46,11 +46,10 @@
 		.top{
 			display: flex;
 			justify-content: center;	
-			align-items: flex-end;
+			align-items: center;
 			margin-bottom: 20px;
 			.logo{
-				font-size: 65px;
-				padding:0 5px;
+				padding:18px 5px;
 			}
 
 			@media screen and (min-width:768px){

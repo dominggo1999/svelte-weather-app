@@ -5,14 +5,24 @@
 	let country ="";
 	let API_KEY = 'c18fdf7e433946bc881144552202008';  
 	let data;
+	let error = false;	
+	let isSubmit = false;
 
 	const handleSubmit =async (e) =>{
 		let url = `https://api.weatherapi.com/v1/current.json?key=${API_KEY}&q=${city}`;
-		
+		isSubmit = true;
 		const callData = async () =>{
-			const res = await fetch(url);
-			const formatData = await res.json();
-			return formatData;
+			const response = await fetch(url).then(res=>{
+				if(res.status!==400){
+					error = true;
+					return res.json();
+				} else{
+					error = false;
+					return
+				}
+
+			});
+			return response;
 		}
 
 		data = callData();
@@ -29,11 +39,14 @@
 			<input class="country" bind:value={country} type="text" required placeholder="Enter country...">
 			<button type="submit">Enter</button>
 			{#await data}
-				<p class="text-white">Loading....</p>
+				<p class="text-white p-t">Loading....</p>
+				}
 			{:then dataReady}
-				<DisplayData data={dataReady}/>
-			{:catch error}
-				<p class="text-white">Sorry, data doesn't exist</p>
+				{#if error}
+					<DisplayData data={dataReady}/>
+				{:else if isSubmit}
+					<p class="text-white p-t">No matching location found.</p>
+				{/if}
 			{/await}
 
 		</form>
@@ -97,6 +110,10 @@
 
 		.text-white{
 			color: #fff;
+		}
+
+		.p-t{
+			margin-top: 100px;
 		}
 	}
 </style>
